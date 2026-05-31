@@ -1,109 +1,57 @@
-# 🌸 VJU InfoBot — Hybrid Web Chatbot Engine (Version 2)
 
----
+ **VJU InfoBot** là hệ thống Chatbot tự động hỗ trợ tư vấn tuyển sinh, thông tin ngành học, học phí và chính sách học bổng của Trường Đại học Việt Nhật (VJU) - ĐHQGHN trong năm 2026. 
 
-## 📝 Tổng Quan Dự Án (Executive Summary)
+Ứng dụng kết hợp giữa mô hình quản lý trạng thái tĩnh và trí tuệ nhân tạo (LLM) cục bộ, mang lại trải nghiệm tra cứu thông tin nhanh chóng và trò chuyện tự nhiên với người dùng.
 
-**VJU InfoBot (Version 2)** là giải pháp Web Chatbot thông minh ứng dụng kiến trúc lai (**Hybrid Routing Architecture**), được phát triển nhằm tự động hóa quy trình tư vấn thông tin tuyển sinh, chương trình đào tạo, lộ trình học phí và chính sách học bổng tại **Trường Đại học Việt Nhật (VJU) - ĐHQGHN**.
 
-Dự án giải quyết triệt để bài toán tối ưu hóa hiệu năng phần cứng bằng cách phân tách luồng xử lý: các kịch bản tra cứu cố định được đảm bảo độ chính xác 100% và tốc độ phản hồi tức thì qua lõi dữ liệu cấu trúc tích hợp máy trạng thái, trong khi các truy vấn ngôn ngữ tự nhiên tự do được định tuyến sang mô hình trí tuai nhân tạo tạo sinh (**Generative AI LLM**) chạy hoàn toàn ngoại tuyến (**Offline/Local**).
+## ✨ Tính năng chính
 
----
+* **⚡ Menu tương tác thông minh:** Điều hướng phân cấp qua các phím số/chữ (`1-7`, `0`, `C`) để tra cứu thông tin tĩnh cực nhanh mà không cần chờ đợi.
+* **📚 Kho dữ liệu tuyển sinh 2026:** Cập nhật chi tiết 9 ngành đào tạo đại học, 6 phương thức xét tuyển, học phí toàn khóa và các gói học bổng doanh nghiệp lớn (Zensho, Mitsubishi).
+* **🧠 Chế độ AI Chat (Sailor2:7b):** Tích hợp mô hình ngôn ngữ lớn qua Ollama để trả lời tự do, thân thiện, ngắn gọn bằng tiếng Việt và tự động lưu trữ ngữ cảnh (`ai_chat_history`).
+* **🌊 Truyền phát dữ liệu (Streaming Response):** Endpoint chuyên biệt giúp hiển thị câu trả lời từ AI theo thời gian thực (stream từng từ) mượt mà, không bị trễ.
+* **🧹 Xử lý ngôn ngữ linh hoạt:** Tích hợp bộ lọc loại bỏ dấu tiếng Việt giúp tối ưu hóa việc nhận diện lệnh từ người dùng.
 
-## 📌 Mục Lục (Table of Contents)
+## 📸 Giao diện ứng dụng
+Hệ thống bao gồm giao diện Web trực quan với các tệp tài nguyên:
+* `index.html`: Giao diện hiển thị khung chat và menu tương tác.
+* `style.css` & `script.js`: Xử lý giao diện động và hiệu ứng hiệu năng cao.
+* `logo-vju-red.png` & `ca.jpg`: Bộ nhận diện thương hiệu và hình ảnh hiển thị trên bot.
 
-* [📝 Tổng Quan Dự Án (Executive Summary)](#-tổng-quan-dự-án-executive-summary)
-* [👤 Thông Tin Nhân Sự (Contributor)](#-thông-tin-nhân-sự-contributor)
-* [🏗️ Kiến Trúc Hệ Thống & Tư Duy Thiết Kế (System Architecture)](#️-kiến-trúc-hệ-thống--tư-duy-thiết-kế-system-architecture)
-* [📂 Cấu Trúc Thư Mục Dự Án (Directory Structure)](#-cấu-trúc-thư-mục-dự-án-directory-structure)
-* [📊 Sơ Đồ Lớp Kỹ Thuật (System Class Diagram)](#-sơ-đồ-lớp-kỹ-thuật-system-class-diagram)
-* [🚀 Hướng Dẫn Triển Khai Nhanh (Quick Deployment)](#-hướng-dẫn-triển-khai-nhanh-quick-deployment)
-* [🤝 Quy Trình Đóng Góp Code (Contributing Workflow)](#-quy-trình-đóng-góp-code-contributing-workflow)
+## 🛠️ Công nghệ sử dụng
 
----
+* **Backend Framework:** FastAPI (Python)
+* **Web Server:** Uvicorn
+* **HTTP Client:** HTTPX (Xử lý các yêu cầu bất đồng bộ đến mô hình AI)
+* **Data Validation:** Pydantic
+* **AI Platform:** Ollama (Model mặc định: `sailor2:7b`)
 
-## 👤 Thông Tin Nhân Sự (Contributor)
-
-* **Sinh viên thực hiện:** Nguyễn Triều Nguyên
-* **Mã số sinh viên (MSV):** 25112092 (GitHub: [@NTN000](https://github.com/NTN000))
-* **Học phần nghiên cứu:** Lập trình hướng đối tượng (OOP)
-* **Tổ chức:** Trường Đại học Việt Nhật - ĐHQGHN (VJU)
-
----
-
-## 🏗️ Kiến Trúc Hệ Thống & Tư Duy Thiết Kế (System Architecture)
-
-Hệ thống được module hóa nghiêm ngặt dựa trên tư duy lập trình hướng đối tượng (OOP) kết hợp kiến trúc hướng dịch vụ nhẹ, đảm bảo tính đóng gói (*Encapsulation*) và khả năng mở rộng dữ liệu linh hoạt:
-
-### 1. Client-Side (Ứng dụng Web hướng trải nghiệm)
-* **Asynchronous Data Streaming:** Sử dụng API `fetch` kết hợp cơ chế đọc luồng dữ liệu thô bất đồng bộ (`ReadableStream`), cho phép hiển thị câu trả lời từ LLM dưới dạng cuộn chữ thời gian thực (*Stream text*), mang lại trải nghiệm mượt mà giống như các sản phẩm AI thương mại lớn.
-* **UI/UX Resiliency:** Tích hợp trạng thái chờ trực quan thông qua hiệu ứng hoạt họa ba chấm động (`.typing-dots`). Hệ thống giải phóng bộ giải mã Markdown (`marked.min.js`) để hiển thị định dạng văn bản một cách tối ưu ngay khi nhận được dữ liệu từ Server.
-* **Smart Auto-scrolling:** Thiết kế thuật toán tính toán tự động cao độ vùng chat (`chat-body`), tự động cuộn xuống đáy khi có tin nhắn mới hoặc hiển thị nút điều hướng nhanh (`#scroll-bottom-btn`) dựa trên hành vi cuộn chuột của người dùng.
-
-### 2. Server-Side (Luồng xử lý Định tuyến Kép)
-* **Rule-based Processing Layer (VJUKnowledgeBase):** Khi nhận yêu cầu đầu vào, hệ thống ưu tiên định tuyến qua bộ kiểm tra menu số cố định kế thừa logic từ lõi dữ liệu gốc. Lớp này quản lý các trạng thái phức tạp thông qua cấu hình Máy trạng thái hữu hạn (*Finite State Machine*), đảm bảo độ chính xác 100% đối với thông tin chính thống về ngành học, học phí, phương thức xét tuyển, hotline liên hệ.
-* **Generative AI Layer (OllamaAI_Engine):** Nếu đầu vào là ngôn ngữ tự nhiên tự do nằm ngoài danh mục tĩnh (ví dụ: chào hỏi, hỏi kiến thức xã hội), yêu cầu sẽ được chuyển đổi thành chuỗi Prompt kỹ thuật cao (*Prompt Engineering*), sau đó chuyển tiếp tới mô hình **Sailor2:1b** đang chạy offline thông qua *Ollama Service Client* nhằm phân tích ngữ cảnh và phản hồi cá nhân hóa.
-
----
-
-## 📂 Cấu Trúc Thư Mục Dự Án (Directory Structure)
-
+## 📂 Cấu trúc mã nguồn chính
+Cấu trúc cây thư mục trong file `VJU-InfoBot-ver2-main.zip`:
 ```text
 VJU-InfoBot-ver2-main/
-├── ACTIVE/
-│   ├── app.py               # Backend Gateway (FastAPI)
-│   ├── index.html           # Frontend Web UI
-│   ├── script.js            # Frontend Web Engine
-│   └── style.css            # Định dạng giao diện 
-├── ca.jpg                   # Hình ảnh nền hoa anh đào
-└── logo-vju-red.png         # Logo VJU chìm nền hộp chat
-```mermaid
-📊 Sơ Đồ Lớp Kỹ Thuật (System Class Diagram)
-```mermaid
-classDiagram
-    class WebBrowser_Client {
-        <<User Interface - script.js>>
-        +sendMessage() Async
-        +appendMessage(text, className) HTMLElement
-        +loadInitialMenu() Async
-    }
+└── ACTIVE/
+    ├── app.py             # File thực thi Backend chính (FastAPI)
+    ├── index.html         # Giao diện người dùng
+    ├── script.js          # Logic điều hướng và gửi nhận API phía Client
+    ├── style.css          # Định dạng giao diện Web Chat
+    ├── ca.jpg             # Hình ảnh tài nguyên
+    └── logo-vju-red.png   # Logo Trường Đại học Việt Nhật
+```
+-------------
+📦 HƯỚNG DẪN CÀI ĐẶT
+Yêu cầu hệ thốngPython 3.10 trở lên.  Đã cài đặt Ollama trên máy tính[cite: 1].
+Các bước thực hiện
+Tải mô hình AI: 
+Mở Terminal/Command Prompt và chạy lệnh sau để tải model sailor2:1b:Bash   ollama pull sailor2:1b
+Đảm bảo ứng dụng Ollama đang chạy dưới nền tại địa chỉ http://localhost:11434.
+Cài đặt các thư viện Python:
+Di chuyển vào thư mục ACTIVE và chạy lệnh cài đặt[cite: 1]:Bash   pip install fastapi uvicorn httpx pydantic
+-------------
 
-    class Python_FastAPI_Server {
-        <<Backend API Gateway - app.py>>
-        +app: FastAPI
-        +chat_stream_endpoint(request) StreamingResponse
-        +reset_chat() Object
-    }
-
-    class VJUKnowledgeBase {
-        <<Core Static Data & State Machine>>
-        +String current_state
-        +String menu_1_tuyen_sinh
-        +Dictionary nganh_details
-        +get_menu_response(user_input: String) String
-    }
-
-    class OllamaAI_Engine {
-        <<Generative AI Orchestrator>>
-        +String model_name
-        +String url
-        +generate_stream_response(prompt: String) Iterator
-    }
-
-    WebBrowser_Client ..> Python_FastAPI_Server : HTTP POST /api/chat-stream (Fetch Stream Payload)
-    Python_FastAPI_Server *-- VJUKnowledgeBase : Composition
-    Python_FastAPI_Server *-- OllamaAI_Engine : Composition
-
-🚀 Hướng Dẫn Triển Khai Nhanh (Quick Deployment)
-Đảm bảo máy đã cài Python >= 3.10 và Ollama (đã chạy lệnh ollama run sailor2:1b), sau đó mở Terminal tại thư mục dự án và thực hiện chuỗi lệnh sau để cài đặt thư viện, khởi chạy máy chủ và truy cập giao diện Chatbot trên trình duyệt:
+🚀 CÁCH CHẠY ỨNG DỤNG
+Khởi chạy server Backend bằng lệnh[cite: 1]:
 
 Bash
-cd VJU-InfoBot-ver2/ACTIVE && pip install fastapi uvicorn httpx pydantic && python app.py
-# Sau khi khởi chạy thành công, mở trình duyệt và truy cập: [http://127.0.0.1:5000](http://127.0.0.1:5000)
-
-🤝 Quy Trình Đóng Góp Code (Contributing Workflow)
-Đẩy nhánh tính năng lên kho chứa cá nhân:
-
-Bash
-git push origin feature/AmazingFeature
-Mở một yêu cầu kiểm tra và tích hợp mã nguồn (Pull Request).
+python app.py
+Sau khi chạy lệnh thành công, mở trình duyệt web và truy cập địa chỉ: http://127.0.0.1:8000 để bắt đầu trải nghiệm InfoBot[cite: 1].
