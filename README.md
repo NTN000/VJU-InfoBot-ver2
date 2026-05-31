@@ -56,7 +56,7 @@ VJU-InfoBot-ver2-main/
 │   └── style.css            # Định dạng giao diện 
 ├── ca.jpg                   # Hình ảnh nền hoa anh đào
 └── logo-vju-red.png         # Logo VJU chìm nền hộp chat
-
+'''
 📊 Sơ Đồ Lớp Kỹ Thuật (System Class Diagram)
 
 <img width="2165" height="1684" alt="mermaid-diagram-2026-05-31-235611" src="https://github.com/user-attachments/assets/c9930216-bda2-4f02-bda9-f9921dbcd428" />
