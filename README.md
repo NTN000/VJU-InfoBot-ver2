@@ -56,20 +56,21 @@ VJU-InfoBot-ver2-main/
 │   └── style.css            # Định dạng giao diện 
 ├── ca.jpg                   # Hình ảnh nền hoa anh đào
 └── logo-vju-red.png         # Logo VJU chìm nền hộp chat
-'''
+```
 📊 Sơ Đồ Lớp Kỹ Thuật (System Class Diagram)
-
+```
 <img width="2165" height="1684" alt="mermaid-diagram-2026-05-31-235611" src="https://github.com/user-attachments/assets/c9930216-bda2-4f02-bda9-f9921dbcd428" />
 
-
+```
 🚀 Hướng Dẫn Triển Khai Nhanh (Quick Deployment)
 Đảm bảo máy đã cài Python >= 3.10 và Ollama (đã chạy lệnh ollama run sailor2:1b), sau đó mở Terminal tại thư mục dự án và thực hiện chuỗi lệnh sau để cài đặt thư viện, khởi chạy máy chủ và truy cập giao diện Chatbot trên trình duyệt:
-
+```
 Bash
 cd VJU-InfoBot-ver2/ACTIVE && pip install fastapi uvicorn httpx pydantic && python app.py
 # Sau khi khởi chạy thành công, mở trình duyệt và truy cập: http://127.0.0.1:5000
-
+```
 🤝 Quy Trình Đóng Góp Code (Contributing Workflow)
 Đẩy nhánh tính năng lên kho chứa cá nhân: git push origin feature/AmazingFeature
 
 Mở một yêu cầu kiểm tra và tích hợp mã nguồn (Pull Request).
+```
