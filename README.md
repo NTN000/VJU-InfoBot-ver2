@@ -40,14 +40,49 @@ VJU-InfoBot-ver2-main/
 ```
 ---
 
-## 🗺️ SƠ ĐỒ UML VẬN HÀNH (SEQUENCE DIAGRAM)
+---
+
+## 🗺️ SƠ ĐỒ LỚP HỆ THỐNG (CLASS DIAGRAM)
 
 <small>
 
-Sơ đồ tuần tự dưới đây minh họa luồng đi của dữ liệu khi người dùng nhắn tin, từ việc kiểm tra trạng thái menu tĩnh cho đến khi kích hoạt luồng xử lý AI Stream từ Ollama:
+Dưới đây là cấu trúc thiết kế kiến trúc các lớp thành phần trong mã nguồn hệ thống:
 
 ```mermaid
-<img width="2165" height="1684" alt="mermaid-diagram-2026-05-31-235611" src="https://github.com/user-attachments/assets/2658428b-a994-4d1d-9a6f-b743d8b0db14" />
+classDiagram
+    class WebBrowser_Client {
+        <<User - Interface script.js>>
+        +sendMessage() : Async
+        +appendMessage(text, className) : HTMLElement
+        +loadInitialMenu() : Async
+    }
+
+    class Python_FastAPI_Server {
+        <<Backend - API Gateway app.py>>
+        +app: FastAPI
+        +chat_stream_endpoint(request) : StreamingResponse
+        +reset_chat() : Object
+    }
+
+    class VJUKnowledgeBase {
+        <<Core & Data Machine State Static>>
+        +String current_state
+        +String menu_1_tuyen_sinh
+        +Dictionary nganh_details
+        +get_menu_response(user_input: String) : String
+    }
+
+    class OllamaAI_Engine {
+        <<Generative AI Orchestrator>>
+        +String model_name
+        +String url
+        +generate_stream_response(prompt: String) : Iterator
+    }
+
+    %% Thiết lập các mối quan hệ (Relationships)
+    WebBrowser_Client ..> Python_FastAPI_Server : HTTP POST /api/chat-stream (Fetch Stream Payload)
+    Python_FastAPI_Server *-- VJUKnowledgeBase : Composition (Hạ tầng dữ liệu cố định)
+    Python_FastAPI_Server *-- OllamaAI_Engine : Composition (Dịch vụ suy luận ngôn ngữ lớn)
 
 ```
 -------------
