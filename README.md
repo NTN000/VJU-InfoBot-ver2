@@ -85,6 +85,31 @@ classDiagram
     Python_FastAPI_Server *-- OllamaAI_Engine : Composition (Dịch vụ suy luận ngôn ngữ lớn)
 
 ```
+## 🏗️ Phân Tích Các Kỹ Thuật OOP Áp Dụng Trong Dự Án
+
+Hệ thống được module hóa nghiêm ngặt dựa trên tư duy Lập trình hướng đối tượng (OOP), giúp phân tách luồng xử lý riêng biệt, dễ dàng bảo trì và mở rộng dữ liệu.
+
+### 1. Tính Đóng Gói (Encapsulation)
+Toàn bộ thuộc tính (dữ liệu) và phương thức (hành vi) được gom cụm chặt chẽ vào các lớp (class) độc lập nhằm che giấu logic xử lý nội bộ với bên ngoài:
+
+* Lớp VJUKnowledgeBase:
+    * Dữ liệu đóng gói: Quản lý toàn bộ dữ liệu tuyển sinh tĩnh và biến trạng thái current_state (Máy trạng thái hữu hạn - FSM).
+    * Che giấu logic: Các thành phần bên ngoài không cần biết cấu trúc rẽ nhánh phức tạp ra sao, chỉ tương tác qua một hàm duy nhất: get_menu_response(user_input).
+* Lớp OllamaAI_Engine:
+    * Dữ liệu đóng gói: Lưu trữ lịch sử hội thoại ai_chat_history, cấu hình endpoint API (url) và tên mô hình AI (model_name).
+    * Che giấu logic: Toàn bộ quá trình gọi kết nối HTTP Client bất đồng bộ và xử lý luồng dữ liệu thô (Stream text) được xử lý kín bên trong phương thức generate_stream_response(prompt).
+
+### 2. Tính Trừu Tượng (Abstraction)
+* Hệ thống sử dụng lớp OllamaAI_Engine đóng vai trò như một "hộp đen" trừu tượng hóa cho mô hình ngữ lớn (Generative AI LLM).
+* Đối với máy chủ FastAPI (app.py), nó hoàn toàn không cần can thiệp hay hiểu về cấu trúc mạng neural của mô hình Sailor2:1b, mà chỉ giao tiếp qua giao diện trừu tượng: Gửi câu hỏi thô, nhận luồng từ ngữ trả về.
+
+### 3. Quan Hệ Giữa Các Đối Tượng (Object Relationships)
+Dự án áp dụng chặt chẽ nguyên lý thiết kế hiện đại: Ưu tiên quan hệ chứa trong thay vì lạm dụng kế thừa (Favor composition over inheritance):
+
+* Quan hệ Thành phần (Composition):
+    Máy chủ chính Python_FastAPI_Server chứa trực tiếp và quản lý toàn bộ vòng đời của hai thực thể VJUKnowledgeBase và OllamaAI_Engine. Khi máy chủ khởi chạy, các thực thể này được khởi tạo; khi máy chủ tắt, chúng sẽ bị hủy theo.
+* Quan hệ Hiệp tác (Association):
+    Giữa giao diện người dùng (WebBrowser_Client) và máy chủ (Python_FastAPI_Server) tương tác lỏng với nhau qua giao thức HTTP (API fetch), trao đổi dữ liệu độc lập mà không sở hữu hay can thiệp vào vòng đời của nhau.
 -------------
 ## 📦 HƯỚNG DẪN CÀI ĐẶT
 
