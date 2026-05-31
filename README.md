@@ -47,43 +47,8 @@ VJU-InfoBot-ver2-main/
 Sơ đồ tuần tự dưới đây minh họa luồng đi của dữ liệu khi người dùng nhắn tin, từ việc kiểm tra trạng thái menu tĩnh cho đến khi kích hoạt luồng xử lý AI Stream từ Ollama:
 
 ```mermaid
-sequenceDiagram
-    autonumber
-    actor User as Người dùng
-    participant Client as Trình duyệt (script.js)
-    participant Server as FastAPI (app.py)
-    participant Ollama as Ollama Server (Sailor2:1b)
+<img width="2165" height="1684" alt="mermaid-diagram-2026-05-31-235611" src="https://github.com/user-attachments/assets/2658428b-a994-4d1d-9a6f-b743d8b0db14" />
 
-    %% Khởi tạo hệ thống
-    Note over User, Server: Khởi tạo hệ thống ban đầu
-    User->>Client: Truy cập trang web
-    Client->>Server: GET / (Tải index.html)
-    Server-->>Client: Trả về giao diện Web Chat
-    Client->>Server: GET /api/init-menu
-    Server-->>Client: Trả về MAIN_MENU (Trạng thái mặc định)
-
-    %% Trường hợp 1: Tra cứu Menu tĩnh
-    Note over User, Server: Trường hợp 1: Tra cứu thông tin tĩnh qua phím số
-    User->>Client: Nhập phím số (Ví dụ: '2' chọn ngành)
-    Client->>Server: POST /chat {message: "2"}
-    Note over Server: Server kiểm tra current_state<br/>Cập nhật trạng thái sang SUB_MENU_NGANH
-    Server-->>Client: Trả về danh sách ngành học tĩnh nhanh chóng
-
-    %% Trường hợp 2: Trò chuyện AI Stream
-    Note over User, Ollama: Trường hợp 2: Trò chuyện tự do với AI (Chế độ phím '6')
-    User->>Client: Nhập câu hỏi tự do (Khi đang ở AI_CHAT_MODE)
-    Client->>Server: POST /api/chat-stream {message: "Học phí thế nào?"}
-    Server->>Server: Đọc lịch sử cuộc gọi (ai_chat_history)
-    Server->>Ollama: Gọi HTTPX Stream tới Model sailor2:1b
-    
-    activate Ollama
-    Ollama-->>Server: Trả về từng cụm từ (Chunk 1)
-    Server-->>Client: Stream phản hồi từng chữ ra màn hình
-    Ollama-->>Server: Trả về từng cụm từ (Chunk 2)
-    Server-->>Client: Stream tiếp tục...
-    deactivate Ollama
-    
-    Note over Server: Tự động lưu câu trả lời mới vào lịch sử
 ```
 -------------
 ## 📦 HƯỚNG DẪN CÀI ĐẶT
