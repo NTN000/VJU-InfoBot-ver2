@@ -75,40 +75,7 @@ VJU-InfoBot-ver2-main/
 
 ## 📊 Sơ Đồ Lớp Kỹ Thuật (System Class Diagram)
 
-```mermaid
-classDiagram
-    class WebBrowser_Client {
-        <<User - Interface script.js>>
-        +sendMessage() Async
-        +appendMessage(text, className) HTMLElement
-        +loadInitialMenu() Async
-    }
-
-    class Python_FastAPI_Server {
-        <<Backend - API Gateway app.py>>
-        +app: FastAPI
-        +chat_stream_endpoint(request) StreamingResponse
-        +reset_chat() Object
-    }
-
-    class VJUKnowledgeBase {
-        <<Core & Data Machine State Static>>
-        +String current_state
-        +String menu_1_tuyen_sinh
-        +Dictionary nganh_details
-        +get_menu_response(user_input: String) String
-    }
-
-    class OllamaAI_Engine {
-        <<Generative AI Orchestrator>>
-        +String model_name
-        +String url
-        +generate_stream_response(prompt: String) Iterator
-    }
-
-    WebBrowser_Client ..> Python_FastAPI_Server : HTTP POST /api/chat-stream (Fetch Stream Payload)
-    Python_FastAPI_Server *-- VJUKnowledgeBase : Composition (Hạ tầng dữ liệu cố định)
-    Python_FastAPI_Server *-- OllamaAI_Engine : Composition (Dịch vụ suy luận ngôn ngữ lớn)
+<img width="2165" height="1684" alt="mermaid-diagram-2026-05-31-235611" src="https://github.com/user-attachments/assets/37d48f98-69e0-4852-9cba-f2d1654f8d2f" />
 
 
 ### 🚀 Hướng Dẫn Triển Khai Nhanh (Quick Deployment)
