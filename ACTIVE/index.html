@@ -17,7 +17,7 @@
             padding: 0;
             width: 100vw;
             height: 100vh;
-            /* Nâng cấp 1: Fix lỗi đường dẫn hiển thị hình con cá ca.jpg ra ngoài cùng */
+    
             background-image: url('/ca.jpg') !important; 
             background-size: cover !important;
             background-position: center center !important;
@@ -27,7 +27,7 @@
             overflow: hidden;
         }
 
-        /* Nâng cấp 2: Đưa bong bóng chat tròn về đúng GÓC DƯỚI BÊN PHẢI */
+      
         #chat-bubble {
             position: fixed !important;
             bottom: 20px !important;
@@ -52,7 +52,6 @@
             transform: scale(1.1); 
         }
 
-        /* Nâng cấp 2: Đưa khung hộp thoại về đúng GÓC DƯỚI BÊN PHẢI */
         .chat-container {
             position: fixed !important;
             bottom: 95px !important;
@@ -91,7 +90,7 @@
             gap: 10px;
         }
 
-        /* Nâng cấp 3: Đặt Logo trường ở góc TRÊN BÊN TRÁI thanh tiêu đề */
+     
         .vju-logo-header {
             width: 26px;
             height: 26px;
@@ -101,7 +100,7 @@
             display: block;
         }
 
-        /* Nâng cấp 3: Đặt nút thùng rác nằm ở góc TRÊN BÊN PHẢI thanh tiêu đề */
+   
         #clear-btn {
             background: transparent;
             border: none;
@@ -120,7 +119,7 @@
         }
 
         .chat-body {
-            position: relative; /* Thêm để định vị nút cuộn tương đối với chat-body */
+            position: relative;
             flex: 1;
             padding: 15px;
             overflow-y: auto;
@@ -136,7 +135,7 @@
         .chat-body::-webkit-scrollbar { width: 5px; }
         .chat-body::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
 
-        /* NÂNG CẤP BƯỚC 3: Thêm CSS cho nút tròn đỏ cuộn nhanh xuống đáy chat */
+        
         #scroll-down-btn {
             position: fixed;
             bottom: 160px;
@@ -147,7 +146,7 @@
             color: white;
             border: 2px solid white;
             border-radius: 50%;
-            display: none; /* Mặc định ẩn, JS sẽ xử lý hiện khi lướt lên */
+            display: none; 
             align-items: center;
             justify-content: center;
             font-size: 16px;
@@ -205,9 +204,7 @@
 
         .timestamp { font-size: 10px; color: #94a3b8; margin-top: 3px; padding: 0 4px; }
 
-        /* ==========================================================================
-           NÂNG CẤP CHUẨN: Thiết kế bong bóng dấu 3 chấm nảy đều nhịp nhàng (Messenger style)
-           ========================================================================== */
+
         .typing-dots {
             display: inline-flex;
             align-items: center;
@@ -222,12 +219,12 @@
             display: inline-block;
             animation: dotBounce 1.4s infinite ease-in-out both;
         }
-        /* Phân chia delay chuẩn xác cho cả 3 dấu chấm */
+
         .typing-dots span:nth-child(1) { animation-delay: -0.32s; }
         .typing-dots span:nth-child(2) { animation-delay: -0.16s; }
         .typing-dots span:nth-child(3) { animation-delay: 0s; }
 
-        /* Keyframes nâng cấp: Co giãn nhẹ và thay đổi độ mờ liên tục tạo hiệu ứng gợn sóng mượt mà */
+
         @keyframes dotBounce {
             0%, 80%, 100% { transform: scale(0.3); opacity: 0.4; }
             40% { transform: scale(1.1); opacity: 1; }
@@ -266,7 +263,7 @@
             const chatBody = document.getElementById("chat-body");
             const clearBtn = document.getElementById("clear-btn");
             
-            // NÂNG CẤP BƯỚC 3: Lấy đối tượng nút đỏ từ DOM
+
             const scrollDownBtn = document.getElementById("scroll-down-btn");
 
             function getCurrentTime() {
@@ -274,7 +271,7 @@
                 return `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
             }
 
-            // Tự động tải câu chào từ Server
+
             async function loadInitialMenu() {
                 try {
                     const response = await fetch("/api/init-menu");
@@ -294,7 +291,6 @@
                 });
             }
 
-            // Click nút Thùng rác xóa lịch sử chat (Đã liên kết chuẩn /api/reset-chat phía backend)
             if (clearBtn) {
                 clearBtn.addEventListener("click", async function (e) {
                     e.stopPropagation();
@@ -311,7 +307,7 @@
                 });
             }
 
-            // Gửi tin nhắn nhận dữ liệu STREAM có hiệu ứng 3 chấm động gõ chữ
+      
             async function sendMessage() {
                 const messageText = userInput.value.trim();
                 if (!messageText) return;
@@ -319,9 +315,7 @@
                 appendMessage(messageText, "user-message");
                 userInput.value = ""; 
 
-                // ==========================================================================
-                // NÂNG CẤP CHUẨN: Đủ cấu trúc 3 thẻ span đại diện cho 3 dấu chấm chuyển động nhấp nháy
-                // ==========================================================================
+         
                 const placeholderBubble = appendMessage(
                     `<div class="typing-dots"><span></span><span></span><span></span></div>`, 
                     "bot-message", 
@@ -337,7 +331,7 @@
 
                     if (response.ok) {
                         const contentSpan = placeholderBubble.querySelector(".message-content");
-                        contentSpan.innerHTML = ""; // Xóa ba chấm khi AI bắt đầu trả chữ ra
+                        contentSpan.innerHTML = ""; 
                         
                         const reader = response.body.getReader();
                         const decoder = new TextDecoder('utf-8');
@@ -393,15 +387,13 @@
             if (sendBtn) sendBtn.addEventListener("click", sendMessage);
             if (userInput) { userInput.addEventListener("keypress", function (e) { if (e.key === "Enter") sendMessage(); }); }
 
-            // ==========================================================================
-            // NÂNG CẤP BƯỚC 3: LOGIC THEO DÕI THANH CUỘN ĐỂ ẨN/HIỆN VÀ CLICK CHO NÚT ĐỎ
-            // ==========================================================================
+            
             if (chatBody && scrollDownBtn) {
                 chatBody.addEventListener("scroll", function () {
-                    // Tính khoảng cách từ vị trí hiện tại đến đáy thực tế của hộp chat
+                    
                     const distanceFromBottom = chatBody.scrollHeight - chatBody.scrollTop - chatBody.clientHeight;
 
-                    // Nếu người dùng lướt lên trên (cách đáy > 150px) -> Hiện nút đỏ, ngược lại ẩn đi
+
                     if (distanceFromBottom > 150) {
                         scrollDownBtn.style.display = "flex";
                     } else {
@@ -409,7 +401,8 @@
                     }
                 });
 
-                // Khi click vào nút đỏ -> Thực hiện hành động cuộn mượt xuống đáy
+   
+                
                 scrollDownBtn.addEventListener("click", function (e) {
                     e.stopPropagation();
                     chatBody.scrollTo({

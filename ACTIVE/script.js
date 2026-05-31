@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const chatBody = document.getElementById("chat-body");
   const clearBtn = document.getElementById("clear-btn");
   
-  // NÂNG CẤP BƯỚC 3: Đồng bộ chính xác với ID nút cuộn "#scroll-bottom-btn" trong CSS của bạn
+
   const scrollBottomBtn = document.getElementById("scroll-bottom-btn"); 
 
   function getCurrentTime() {
@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", function () {
       return `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
   }
 
-  // 1. Tự động lấy câu chào Menu Chính từ Server
+
   async function loadInitialMenu() {
       try {
           const response = await fetch("/api/init-menu");
@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
   loadInitialMenu();
  
-  // 2. Click vào bong bóng tròn để đóng/mở khung chat widget
+
   if (chatBubble && chatWidget) {
       chatBubble.addEventListener("click", function (e) {
           e.stopPropagation();
@@ -36,7 +36,7 @@ document.addEventListener("DOMContentLoaded", function () {
       });
   }
  
-  // 3. Tính năng click nút Thùng rác để Xóa lịch sử chat
+
   if (clearBtn) {
       clearBtn.addEventListener("click", async function (e) {
           e.stopPropagation();
@@ -56,7 +56,7 @@ document.addEventListener("DOMContentLoaded", function () {
       });
   }
  
-  // 4. Hàm gửi tin nhắn nhận dữ liệu STREAM (Đã nâng cấp dấu 3 chấm động)
+
   async function sendMessage() {
       const messageText = userInput.value.trim();
       if (!messageText) return;
@@ -64,7 +64,7 @@ document.addEventListener("DOMContentLoaded", function () {
       appendMessage(messageText, "user-message");
       userInput.value = ""; 
  
-      // NÂNG CẤP: Thay đổi "..." tĩnh bằng cấu trúc HTML 3 chấm động (.typing-dots) nhấp nháy, bật cờ isHTML = true
+   
       const placeholderBubble = appendMessage(
           `<div class="typing-dots"><span></span><span></span><span></span></div>`, 
           "bot-message",
@@ -80,7 +80,7 @@ document.addEventListener("DOMContentLoaded", function () {
  
           if (response.ok) {
               const contentSpan = placeholderBubble.querySelector(".message-content");
-              contentSpan.innerHTML = ""; // Xóa hiệu ứng 3 chấm khi AI bắt đầu trả chữ ra
+              contentSpan.innerHTML = ""; 
               
               const reader = response.body.getReader();
               const decoder = new TextDecoder('utf-8');
@@ -110,7 +110,7 @@ document.addEventListener("DOMContentLoaded", function () {
       chatBody.scrollTop = chatBody.scrollHeight;
   }
  
-  // 5. Hàm appendMessage nâng cấp (Thêm tham số isHTML để tương thích với cấu trúc hiển thị thời gian và markdown của bạn)
+
   function appendMessage(text, className, isHTML = false) {
       const messageDiv = document.createElement("div");
       messageDiv.className = `message ${className}`;
@@ -121,7 +121,7 @@ document.addEventListener("DOMContentLoaded", function () {
       const textSpan = document.createElement("span");
       textSpan.className = "message-content";
       
-      // Xử lý thông minh: Nếu truyền hiệu ứng 3 chấm dạng HTML thì render thẳng, ngược lại render văn bản/markdown
+    
       if (isHTML) {
           textSpan.innerHTML = text;
       } else if (className === "bot-message" && typeof marked !== "undefined" && typeof marked.parse === "function") {
@@ -149,16 +149,14 @@ document.addEventListener("DOMContentLoaded", function () {
       });
   }
 
-  // ==========================================================================
-  // NÂNG CẤP BƯỚC 3: XỬ LÝ ẨN/HIỆN QUA CLASS `.visible` VÀ CUỘN MƯỢT CHO NÚT ĐỎ
-  // ==========================================================================
+  
   if (chatBody && scrollBottomBtn) {
-      // Lắng nghe sự kiện lướt chuột trong khung nội dung chatBody
+      
       chatBody.addEventListener("scroll", function () {
-          // Tính toán khoảng cách thực tế từ vị trí thanh cuộn hiện tại tới đáy
+         
           const distanceFromBottom = chatBody.scrollHeight - chatBody.scrollTop - chatBody.clientHeight;
 
-          // Nếu lướt ngược lên trên cách đáy hơn 150px -> Thêm class .visible để hiển thị, ngược lại xóa đi
+
           if (distanceFromBottom > 150) {
               scrollBottomBtn.classList.add("visible");
           } else {
@@ -166,7 +164,7 @@ document.addEventListener("DOMContentLoaded", function () {
           }
       });
 
-      // Bắt sự kiện khi người dùng click vào nút đỏ -> Cuộn mượt mà xuống dưới cùng
+ 
       scrollBottomBtn.addEventListener("click", function (e) {
           e.stopPropagation();
           chatBody.scrollTo({

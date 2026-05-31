@@ -7,22 +7,18 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.responses import StreamingResponse, FileResponse
 from pydantic import BaseModel
 import httpx
-import uvicorn  # Đã thêm để sửa lỗi NameError
+import uvicorn  
 
 app = FastAPI()
 
-# Cấu hình kết nối Ollama local
+
 OLLAMA_URL = "http://localhost:11434/api/chat"  
 MODEL_NAME = "sailor2:1b"  
 
-# ------------------------------------------------------------------
-# BIẾN TOÀN CỤC LƯU LỊCH SỬ TRÒ CHUYỆN (CHAT MEMORY) - GIỮ NGUYÊN
-# ------------------------------------------------------------------
+
 ai_chat_history = []  
 
-# ------------------------------------------------------------------
-# GIỮ NGUYÊN KHÔNG MẤT MỘT CHỮ VĂN BẢN SOẠN SẴN TỪ FILE CỦA BẠN
-# ------------------------------------------------------------------
+
 MENU_1_TUYEN_SINH = (
     "Năm 2026, Trường Đại học Việt Nhật (VJU) - ĐHQGHN tuyển 800 chỉ tiêu cho 9 chương trình đào tạo "
     "(gồm các ngành kỹ thuật, công nghệ và khoa học xã hội). Trường áp dụng 06 phương thức xét tuyển, "
@@ -211,9 +207,9 @@ def get_main_menu_string():
         "Xin chào, tôi là chatbot VJU.\n"
         "Hiện tại tôi có thể trả lời các câu hỏi về:\n"
         "1. Thông tin tuyển sinh\n"
-        " 2. Thông tin về các ngành học\n"
-        " 3. Mức học phí và chính sách học bổng\n"
-        " 4. Địa chỉ các cơ sở của trường\n"
+        "2. Thông tin về các ngành học\n"
+        "3. Mức học phí và chính sách học bổng\n"
+        "4. Địa chỉ các cơ sở của trường\n"
         "5. Thông tin liên lạc và các dịch vụ hỗ trợ sinh viên\n"
         "6. Trò chuyện vui vẻ với AI 🎉\n"
         "7. Exit (Thoát chương trình)\n\n"
@@ -227,9 +223,7 @@ async def init_menu():
     ai_chat_history = []  
     return {"response": get_main_menu_string()}
 
-# ------------------------------------------------------------------
-# [GIỮ NGUYÊN]: CƠ CHẾ GENERATOR ĐỂ STREAM CHỮ TỪNG TỪ MỘT CỦA BẠN
-# ------------------------------------------------------------------
+
 @app.post("/api/chat-stream")
 async def chat_stream_endpoint(data: ChatMessage):
     """Giữ nguyên logic tạo luồng stream từ Ollama theo định dạng StreamingResponse của bạn"""
@@ -357,7 +351,7 @@ async def chat_endpoint(data: ChatMessage):
     user_msg_upper = user_msg.upper()
 
     try:
-        # --- 1. XỬ LÝ MENU CHÍNH ---
+       
         if current_state == "MAIN_MENU":
             if user_msg == "1":
                 current_state = "VIEWING_STATIC_INFO"
@@ -389,7 +383,7 @@ async def chat_endpoint(data: ChatMessage):
             else:
                 return {"response": "Lựa chọn không hợp lệ. Vui lòng nhập từ 1 đến 7."}
 
-        # --- 2. XỬ LÝ CHẾ ĐỘ CHAT AI ---
+       
         elif current_state == "AI_CHAT_MODE":
             if user_msg in ["0", "quay lai", "quay lại"]:
                 current_state = "MAIN_MENU"
@@ -418,7 +412,7 @@ async def chat_endpoint(data: ChatMessage):
                     else:
                         return {"response": "Hệ thống AI đang bận, vui lòng thử lại sau!"}
 
-        # --- 3. XỬ LÝ KHI XEM THÔNG TIN TĨNH ---
+      
         elif current_state == "VIEWING_STATIC_INFO":
             if user_msg == "0":
                 current_state = "MAIN_MENU"
@@ -426,7 +420,7 @@ async def chat_endpoint(data: ChatMessage):
             else:
                 return {"response": "Vui lòng bấm phím '0' để quay lại Màn hình chính."}
 
-        # --- 4. XỬ LÝ SUB MENU NGÀNH HỌC ---
+       
         elif current_state == "SUB_MENU_NGANH":
             if user_msg in NGANH_DETAILS:
                 current_state = "VIEWING_NGANH_DETAIL"
@@ -437,7 +431,6 @@ async def chat_endpoint(data: ChatMessage):
             else:
                 return {"response": "Lựa chọn không hợp lệ. Hãy nhập từ 1-7 hoặc '0'."}
 
-        # --- 5. XỬ LÝ CHI TIẾT NGÀNH ---
         elif current_state == "VIEWING_NGANH_DETAIL":
             if user_msg_upper == "C":
                 current_state = "SUB_MENU_NGANH"
@@ -452,13 +445,11 @@ async def chat_endpoint(data: ChatMessage):
         print(f"Lỗi hệ thống: {e}")
         return {"response": "Có lỗi xảy ra trên máy chủ xử lý dữ liệu."}
 
-# ==========================================================================
-# 🛠️ NÂNG CẤP ĐƯỜNG DẪN TĨNH: QUÉT VÀ TRẢ FILE TRỰC TIẾP (SỬA DỨT ĐIỂM 404)
-# ==========================================================================
+
 current_dir = os.path.dirname(os.path.abspath(__file__))
 parent_dir = os.path.dirname(current_dir)
 
-# 1. Định vị tuyến trang chủ: Trả về đúng file index.html trong thư mục ACTIVE
+
 @app.get("/")
 async def get_index():
     index_path = os.path.join(current_dir, "index.html")
@@ -466,7 +457,7 @@ async def get_index():
         return FileResponse(index_path)
     raise HTTPException(status_code=404, detail="Không tìm thấy file index.html")
 
-# 2. SỬA LỖI 404: Quét thông minh tự động tìm file ảnh ở thư mục cha và thư mục hiện tại
+
 @app.get("/{file_name}")
 async def get_root_images(file_name: str):
     allowed_extensions = (".jpg", ".jpeg", ".png", ".gif", ".webp", ".ico")
@@ -483,18 +474,15 @@ async def get_root_images(file_name: str):
             
     raise HTTPException(status_code=404, detail=f"Không tìm thấy file {file_name}")
 
-# 3. Định nghĩa thêm đường dẫn dự phòng chứa tiền tố /static/
-# ==========================================================================
-# RE-SET CUỘC TRÒ CHUYỆN (KHI BẤM NÚT THÙNG RÁC)
-# ==========================================================================
+
 @app.post("/api/reset-chat")
 async def reset_chat():
     global current_state, ai_chat_history
     current_state = "MAIN_MENU"
-    ai_chat_history = []  # Xóa sạch lịch sử chat cũ của AI
-    return {"response": get_main_menu_string()}  # Trả về chuỗi lời chào Menu chính
+    ai_chat_history = []  
+    return {"response": get_main_menu_string()}  
 
-# --- ĐÂY LÀ ĐOẠN CODE CŨ CỦA BẠN (GIỮ NGUYÊN PHÍA DƯỚI) ---
+
 @app.get("/static/{file_name}")
 async def get_static_image(file_name: str):
     image_path = os.path.join(parent_dir, file_name)
