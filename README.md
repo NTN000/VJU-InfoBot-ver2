@@ -6,7 +6,7 @@
 
 **VJU InfoBot (Version 2)** là giải pháp Web Chatbot thông minh ứng dụng kiến trúc lai (**Hybrid Routing Architecture**), được phát triển nhằm tự động hóa quy trình tư vấn thông tin tuyển sinh, chương trình đào tạo, lộ trình học phí và chính sách học bổng tại **Trường Đại học Việt Nhật (VJU) - ĐHQGHN**.
 
-Dự án giải quyết triệt để bài toán tối ưu hóa hiệu năng phần cứng bằng cách phân tách luồng xử lý: các kịch bản tra cứu cố định được đảm bảo độ chính xác 100% và tốc độ phản hồi tức thì qua lõi dữ liệu cấu trúc tích hợp máy trạng thái, trong khi các truy vấn ngôn ngữ tự nhiên tự do được định tuyến sang mô hình trí tuệ nhân tạo tạo sinh (**Generative AI LLM**) chạy hoàn toàn ngoại tuyến (**Offline/Local**).
+Dự án giải quyết triệt để bài toán tối ưu hóa hiệu năng phần cứng bằng cách phân tách luồng xử lý: các kịch bản tra cứu cố định được đảm bảo độ chính xác 100% và tốc độ phản hồi tức thì qua lõi dữ liệu cấu trúc tích hợp máy trạng thái, trong khi các truy vấn ngôn ngữ tự nhiên tự do được định tuyến sang mô hình trí tuai nhân tạo tạo sinh (**Generative AI LLM**) chạy hoàn toàn ngoại tuyến (**Offline/Local**).
 
 ---
 
@@ -18,6 +18,7 @@ Dự án giải quyết triệt để bài toán tối ưu hóa hiệu năng ph�
 * [📂 Cấu Trúc Thư Mục Dự Án (Directory Structure)](#-cấu-trúc-thư-mục-dự-án-directory-structure)
 * [📊 Sơ Đồ Lớp Kỹ Thuật (System Class Diagram)](#-sơ-đồ-lớp-kỹ-thuật-system-class-diagram)
 * [🚀 Hướng Dẫn Triển Khai Nhanh (Quick Deployment)](#-hướng-dẫn-triển-khai-nhanh-quick-deployment)
+* [🤝 Quy Trình Đóng Góp Code (Contributing Workflow)](#-quy-trình-đóng-góp-code-contributing-workflow)
 
 ---
 
@@ -56,9 +57,9 @@ VJU-InfoBot-ver2-main/
 │   └── style.css            # Định dạng giao diện 
 ├── ca.jpg                   # Hình ảnh nền hoa anh đào
 └── logo-vju-red.png         # Logo VJU chìm nền hộp chat
-```
+```mermaid
 📊 Sơ Đồ Lớp Kỹ Thuật (System Class Diagram)
-```
+```mermaid
 classDiagram
     class WebBrowser_Client {
         <<User Interface - script.js>>
@@ -93,16 +94,16 @@ classDiagram
     Python_FastAPI_Server *-- VJUKnowledgeBase : Composition
     Python_FastAPI_Server *-- OllamaAI_Engine : Composition
 
-```
 🚀 Hướng Dẫn Triển Khai Nhanh (Quick Deployment)
 Đảm bảo máy đã cài Python >= 3.10 và Ollama (đã chạy lệnh ollama run sailor2:1b), sau đó mở Terminal tại thư mục dự án và thực hiện chuỗi lệnh sau để cài đặt thư viện, khởi chạy máy chủ và truy cập giao diện Chatbot trên trình duyệt:
-```
+
 Bash
 cd VJU-InfoBot-ver2/ACTIVE && pip install fastapi uvicorn httpx pydantic && python app.py
-# Sau khi khởi chạy thành công, mở trình duyệt và truy cập: http://127.0.0.1:5000
-```
-🤝 Quy Trình Đóng Góp Code (Contributing Workflow)
-Đẩy nhánh tính năng lên kho chứa cá nhân: git push origin feature/AmazingFeature
+# Sau khi khởi chạy thành công, mở trình duyệt và truy cập: [http://127.0.0.1:5000](http://127.0.0.1:5000)
 
+🤝 Quy Trình Đóng Góp Code (Contributing Workflow)
+Đẩy nhánh tính năng lên kho chứa cá nhân:
+
+Bash
+git push origin feature/AmazingFeature
 Mở một yêu cầu kiểm tra và tích hợp mã nguồn (Pull Request).
-```
