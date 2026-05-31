@@ -72,3 +72,52 @@ VJU-InfoBot-ver2-main/
 │   └── style.css            # Định dạng giao diện (Responsive Style, Animations & Bộ nhận diện thương hiệu)
 ├── ca.jpg                   # Tài nguyên đồ họa - Hình ảnh nền hoa anh đào chủ đạo giao diện ứng dụng
 └── logo-vju-red.png         # Tài nguyên thương hiệu - Logo VJU chìm (Watermark) nền hộp chat
+
+📊 Sơ Đồ Lớp Kỹ Thuật (System Class Diagram)
+<img width="2165" height="1684" alt="mermaid-diagram-2026-05-31-235611" src="https://github.com/user-attachments/assets/6fc86f43-b529-4786-9267-727c55a526f7" />
+🚀 Hướng Dẫn Triển Khai (Deployment Guide)
+1. Điều kiện tiên quyết (Prerequisites)
+Môi trường: Máy tính cài đặt sẵn Python >= 3.10.
+
+AI Runtime: Đã cài đặt công cụ Ollama cục bộ trên máy.
+
+Mô hình phục vụ: Tải và chạy trước mô hình nền tảng bằng câu lệnh sau trong Terminal:
+
+Bash
+ollama run sailor2:1b
+2. Các bước thiết lập môi trường cục bộ
+Bước 1: Tải mã nguồn về máy trạm và di chuyển vào thư mục hoạt động
+
+Bash
+git clone [https://github.com/NTN000/VJU-InfoBot-ver2.git](https://github.com/NTN000/VJU-InfoBot-ver2.git)
+cd VJU-InfoBot-ver2/ACTIVE
+Bước 2: Cài đặt các gói thư viện phụ thuộc (Dependencies)
+Khởi tạo và cài đặt các thành phần phụ thuộc của máy chủ API Backend (bao gồm FastAPI, Uvicorn, Pydantic và HTTPX):
+
+Bash
+pip install fastapi uvicorn httpx pydantic
+Bước 3: Khởi chạy máy chủ dịch vụ (Backend Server)
+Chạy lệnh sau để khởi động ASGI Server lắng nghe các kết nối từ client:
+
+Bash
+python app.py
+Bước 4: Truy cập ứng dụng
+Kích hoạt trình duyệt bất kỳ (Chrome, Edge, Safari, Firefox) và truy cập vào cổng dịch vụ mặc định:
+
+Plaintext
+[http://127.0.0.1:5000](http://127.0.0.1:5000)
+🤝 Quy Trình Đóng Góp Code (Contributing Workflow)
+Hệ thống luôn chào đón các đóng góp mở rộng tính năng theo quy trình chuẩn Git-Flow:
+
+Tạo bản sao dự án này (Fork dự án).
+
+Khởi tạo một nhánh tính năng mới độc lập (git checkout -b feature/AmazingFeature).
+
+Ghi lại các thay đổi mã nguồn cục bộ kèm theo thông điệp chuẩn hóa (git commit -m 'Feat: Add some AmazingFeature').
+
+Đẩy nhánh tính năng lên kho chứa cá nhân (git push origin feature/AmazingFeature).
+
+Mở một yêu cầu kiểm tra và tích hợp mã nguồn (Pull Request).
+
+
+
