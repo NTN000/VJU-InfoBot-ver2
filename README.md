@@ -57,36 +57,19 @@ VJU-InfoBot-ver2-main/
 ├── ca.jpg                   # Hình ảnh nền hoa anh đào
 └── logo-vju-red.png         # Logo VJU chìm nền hộp chat
 
-classDiagram
-    class WebBrowser_Client {
-        <<User Interface - script.js>>
-        +sendMessage() Async
-        +appendMessage(text, className) HTMLElement
-        +loadInitialMenu() Async
-    }
+📊 Sơ Đồ Lớp Kỹ Thuật (System Class Diagram)
 
-    class Python_FastAPI_Server {
-        <<Backend API Gateway - app.py>>
-        +app: FastAPI
-        +chat_stream_endpoint(request) StreamingResponse
-        +reset_chat() Object
-    }
+<img width="2165" height="1684" alt="mermaid-diagram-2026-05-31-235611" src="https://github.com/user-attachments/assets/c9930216-bda2-4f02-bda9-f9921dbcd428" />
 
-    class VJUKnowledgeBase {
-        <<Core Static Data & State Machine>>
-        +String current_state
-        +String menu_1_tuyen_sinh
-        +Dictionary nganh_details
-        +get_menu_response(user_input: String) String
-    }
 
-    class OllamaAI_Engine {
-        <<Generative AI Orchestrator>>
-        +String model_name
-        +String url
-        +generate_stream_response(prompt: String) Iterator
-    }
+🚀 Hướng Dẫn Triển Khai Nhanh (Quick Deployment)
+Đảm bảo máy đã cài Python >= 3.10 và Ollama (đã chạy lệnh ollama run sailor2:1b), sau đó mở Terminal tại thư mục dự án và thực hiện chuỗi lệnh sau để cài đặt thư viện, khởi chạy máy chủ và truy cập giao diện Chatbot trên trình duyệt:
 
-    WebBrowser_Client ..> Python_FastAPI_Server : HTTP POST /api/chat-stream (Fetch Stream Payload)
-    Python_FastAPI_Server *-- VJUKnowledgeBase : Composition
-    Python_FastAPI_Server *-- OllamaAI_Engine : Composition
+Bash
+cd VJU-InfoBot-ver2/ACTIVE && pip install fastapi uvicorn httpx pydantic && python app.py
+# Sau khi khởi chạy thành công, mở trình duyệt và truy cập: http://127.0.0.1:5000
+
+🤝 Quy Trình Đóng Góp Code (Contributing Workflow)
+Đẩy nhánh tính năng lên kho chứa cá nhân: git push origin feature/AmazingFeature
+
+Mở một yêu cầu kiểm tra và tích hợp mã nguồn (Pull Request).
