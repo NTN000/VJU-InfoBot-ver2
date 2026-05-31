@@ -73,8 +73,42 @@ VJU-InfoBot-ver2-main/
 ├── ca.jpg                   # Tài nguyên đồ họa - Hình ảnh nền hoa anh đào chủ đạo giao diện ứng dụng
 └── logo-vju-red.png         # Tài nguyên thương hiệu - Logo VJU chìm (Watermark) nền hộp chat
 
-📊 Sơ Đồ Lớp Kỹ Thuật (System Class Diagram)
-<img width="2165" height="1684" alt="mermaid-diagram-2026-05-31-235611" src="https://github.com/user-attachments/assets/6fc86f43-b529-4786-9267-727c55a526f7" />
+## 📊 Sơ Đồ Lớp Kỹ Thuật (System Class Diagram)
+
+```mermaid
+classDiagram
+    class WebBrowser_Client {
+        <<User - Interface script.js>>
+        +sendMessage() Async
+        +appendMessage(text, className) HTMLElement
+        +loadInitialMenu() Async
+    }
+
+    class Python_FastAPI_Server {
+        <<Backend - API Gateway app.py>>
+        +app: FastAPI
+        +chat_stream_endpoint(request) StreamingResponse
+        +reset_chat() Object
+    }
+
+    class VJUKnowledgeBase {
+        <<Core & Data Machine State Static>>
+        +String current_state
+        +String menu_1_tuyen_sinh
+        +Dictionary nganh_details
+        +get_menu_response(user_input: String) String
+    }
+
+    class OllamaAI_Engine {
+        <<Generative AI Orchestrator>>
+        +String model_name
+        +String url
+        +generate_stream_response(prompt: String) Iterator
+    }
+
+    WebBrowser_Client ..> Python_FastAPI_Server : HTTP POST /api/chat-stream (Fetch Stream Payload)
+    Python_FastAPI_Server *-- VJUKnowledgeBase : Composition (Hạ tầng dữ liệu cố định)
+    Python_FastAPI_Server *-- OllamaAI_Engine : Composition (Dịch vụ suy luận ngôn ngữ lớn)
 
 
 ### 🚀 Hướng Dẫn Triển Khai Nhanh (Quick Deployment)
